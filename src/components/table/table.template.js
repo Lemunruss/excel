@@ -3,11 +3,25 @@ const CODES = {
     Z: 90
 }
 
-function toCell(_, col){
-    return `
-    <div class="cell" contenteditable data-col="${col}"></div>
-    `
-}
+// function toCell(row, col){ // 1й Вариант добавления ячеек
+//     return `
+//     <div class="cell" contenteditable data-col="${col}" data-row="${row}"></div>
+//     `
+// }
+
+    function toCell(row){ // 2й Вариант добавления ячеек через замыкания
+        return function(_, col){
+            return `
+            <div 
+            class="cell"
+            contenteditable 
+            data-col="${col}"
+            data-type="cell"  
+            data-id="${row}:${col}">
+            </div>
+            `
+        } // в data-type статично добавляем атрибут cell для всех строк в т.ч. 0вой где A B C и тд. и крайней левой где 1, 2, 3
+    }
 
 function toColumn(col, index){
     return `
@@ -47,12 +61,13 @@ export function createTable (rowsCount = 15) {
         .join("")
 
     rows.push(createRow(null, cols));
-    for (let i = 0; i < rowsCount; i++){
+    for (let row = 0; row < rowsCount; row++){
         const cells = new Array(colsCount)
         .fill("")
-        .map(toCell)  // Функция не вызывается потому что она вызывается при вызове map на каждой итерации.
+        //.map((_, col) => toCell(row, col))  // Функция не вызывается потому что она вызывается при вызове map на каждой итерации. Для 1го варианта создания ячеек
+        .map(toCell(row)) // Для 2го варианта создания ячеек
         .join("")
-        rows.push(createRow(i+1, cells));
+        rows.push(createRow(row+1, cells));
     }
 
     return rows.join ("");
