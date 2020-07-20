@@ -20,9 +20,21 @@ export class TableSelection { // класс отвечающий за работ
         this.group = []; // создаем новый массив
     }
 
+    get selectedIds (){
+        return this.group.map( $el =>{
+            $el.id()
+        })
+    }
+
     selectGroup($group =[]){ // метод на выбор нескольких ячеек
         this.clear();
         this.group = $group;
         this.group.forEach($el => $el.addClass(TableSelection.className))
+    }
+
+    applyStyle(style){
+        this.group.forEach($el => {
+            $el.css(style);
+        })
     }
 }
