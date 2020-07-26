@@ -51,7 +51,7 @@ export class ExcelComponent extends DomListener{
     }
 
     destroy (){ // метод для удаления компанента и листенеров с компонентов 
-        this.removeDomListeners();
+        this.removeDOMListeners();
         this.unsubscribers.forEach(unsub => unsub());
         //this.storeSub.unsubscribe();
     }
